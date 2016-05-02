@@ -12,17 +12,85 @@
 	测试例子   “”    NULL   “0”   “+”      “   -123dasf"    "42768"     
 */
 #include<stdio.h>
+#include<string.h>
 
-enum Status{ kValid = 0, kInvalid };
-int s2i_status = kInvalid;
-int StrToInt(const char  * str)
+enum Status{ kValid = 0,    //合法
+			kInvalid_NULL,   //不合法 传递字符串为NULL
+			kInvalid_NUL,     //不合法 传递字符串为NUL
+			kInvalid_OF,       //不合法  字符串代表数值超出了int范围
+			kInvalid_NO_Valid_NUM }; // 不合法  传递字符串有字符但是没有有效数值如"+"
+int s2i_status = kValid;
+int StrToInt(const char  * src)
 {
- 	
+	int flag = 1;
+	long long num = 0;
+	s2i_status = kValid;
+ 	if( src== NULL  )   //NULL
+	{
+		s2i_status = kInvalid_NULL;
+		return 0;
+	}
+	if( *src == '\0' )  //NUL  这个判断放在判断空格和正负后避免 "   " ," +"这些情况
+	{
+		s2i_status = kInvalid_NUL;
+		return 0;
+	}
+	while( *src == ' ' )  //空格情况
+		 src++;
 
+	if ( *src == '+' )  //考虑正负
+	{
+		src++;
+		flag = 1;
+	}
+	else if( *src == '-' )
+	{
+		src++;
+		flag = 0;
+	}
+
+	if( *src > '9' || *src < '0'  )  //NUL  这个判断放在判断空格和正负后避免 "   " ," +"这些情况
+	{
+		s2i_status = kInvalid_NO_Valid_NUM;
+		return 0;
+	}
+	while( *src <= '9' && *src >= '0' )
+	{
+		num = num * 10 + *src - '0';
+		if( flag &&  num > 0x7FFFFFFF || \
+		 !flag && num > 0x80000000)
+		{
+			s2i_status = kInvalid_OF;
+			return 0;
+		}
+		src++;
+	}
+	return flag == 1? (int)(num) : (int)(0 - num);
 }
 
 
-int main(int argc,  char **argc)
+int main(int argc,  char **argv)
 {
-
+	char  str[100] = "";
+	int result = 0;
+	//测试例子   “”    NULL   “0”   “+”      “   -123dasf"    "42768"     
+	while(1)
+	{
+		printf("input str:\n");
+		gets(str);
+		if(strcmp(str,"exit") == 0)
+			break;
+		result = StrToInt(str);
+		if( s2i_status == kInvalid_NULL )
+			printf("kInvalid_NULL\n");
+		else if( s2i_status == kInvalid_NUL )
+			printf("kInvalid_NUL\n");
+		else if( s2i_status == kInvalid_OF )
+			printf("kInvalid_OF\n");
+		else if( s2i_status == kInvalid_NO_Valid_NUM )
+			printf("kInvalid_NO_Valid_NUM\n");
+		else 
+			printf("result: %d\n",result);
+	}
 }
+
