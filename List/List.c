@@ -135,9 +135,9 @@ List List_Reverse(List L)
 /******查找链表中间元素*******/
 Position Search_Moddle(List L)
 {
-    Position cur = NULL, middle = NULL;
+    Position cur = NULL, middle = L->Next;  
     int i = 0, j = 0;
-    if(L == NULL)
+    if(L == NULL || L->Next == NULL)
     {
         printf("List is NULL");
         return NULL;
@@ -173,9 +173,57 @@ int IsLoop(List L, List *start)
 
     if( stepone != steptwo )
     {
+	*start = NULL;
         return 0;
     }
     *start = stepone;
     return 1;
 }
 
+/*************求倒数第K个节点*******************/
+/* 
+	注意点：
+		1 考虑链表长度小于k和考虑k = 0 情况 
+		2 链表为NULL或者没元素
+		3 最后一个节点指向NULL 不算节点
+		
+	2016.05.10
+					 				*/
+enum FindKthToTaik_Status
+{
+	kValid = 0,kInvalid_GT,kInvalid_Z,ListInvalid
+};
+int FKTT_Status = kValid;
+Position FindKthToTail(List  L, unsigned int k)
+{
+	int i = 0;
+	Position pHead = L;
+	Position pBehind = 	L;
+	FKTT_Status = kValid;
+	if(L == NULL || L->Next == NULL)
+	{
+		FKTT_Status = ListInvalid;
+		return NULL;
+	}
+	if( k == 0 )//k == 0情况
+	{
+		FKTT_Status = kInvalid_Z;
+		return NULL;
+	}
+	for( i = 1;  i < k; i++)  //注意 如果前面没有k != 0判断这里不要用<=k-1，因为k=0时 k-1=0XFFFFFFFF，会导致崩溃
+	{	
+		pHead = pHead->Next;
+		if( pHead->Next  == NULL)  //考虑链表长度小于k
+		{
+			FKTT_Status = kInvalid_GT;
+			return NULL;
+		}
+	}
+	while(pHead->Next != NULL)  //这里不能是pHead != NULL 因为这样相当于把NULL 也当成一个节点算进去了，当K = 1也就是倒数第一个时 返回的是NULL
+	{
+		pHead = pHead->Next;
+		pBehind = pBehind->Next;
+	}
+	return pBehind;
+}
+		

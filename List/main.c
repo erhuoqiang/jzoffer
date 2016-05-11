@@ -8,9 +8,10 @@ int main()
 	List L = CreatHeader();
 	Position P = L;
 	Position middle = NULL;
+	Position KthToTail = NULL;
 	int temp = 0;
-
-	while( scanf("%d", &temp) == 1 )
+	printf("Please input  int Element, end with 0.\n");
+	while( scanf("%d", &temp) == 1 && temp != 0)
 	{
 		Insert( temp, L, P ); //´ÓÄ©Î²²åÈë
 		P = P->Next;
@@ -23,7 +24,16 @@ int main()
 	}
 
     middle = Search_Moddle(L);
+    if(middle != NULL)
     printf("middle element is %d\n", middle->Element);
+    
+    printf("Please input kth To List Tail:");
+    scanf("%d",&temp);
+    KthToTail = FindKthToTail(L,(unsigned int )temp);
+    if(KthToTail != NULL)
+   	printf("Kth To Tail is: %d\n",  KthToTail->Element);
+    else 
+	printf("K is ERROR status = %d\n", FKTT_Status);
 
 	/******½«Lµ¹Ðð****/
 	L = List_Reverse(L);
@@ -33,7 +43,7 @@ int main()
 		printf("%d ",P->Element);
 			P = P->Next;
 	}
-	L->Next->Next->Next->Next = L->Next;
+	L->Next->Next = L->Next;
     printf("IsLoop ? %s\n", IsLoop(L, &P)? "yes": "no");
     printf("%d", P->Element);
     getchar();
