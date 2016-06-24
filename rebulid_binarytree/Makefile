@@ -7,4 +7,4 @@ $(obj):$(src)
 	$(CC) $(src) -c -o $(obj) 
 
 clean:
-	rm -f Tree *.o   
+	rm -f Tree *.o *~

@@ -45,6 +45,10 @@ public:
 
     void Print_Tree(void);
 
+//判断currentT是否包含子树subT
+    friend bool HasSubTree(Tree * currentT, Tree  * subT);
+
+
     friend int IsSortTree(Tree * tree);
     //根据二叉树的前序遍历和后续遍历重建二叉树
     Node * Rebulid_BinaryTree(int preorder[], int midorder[],int len);
@@ -418,6 +422,7 @@ void Tree::Print_Tree(void)
         }
 
     }
+    cout<<endl;
 }
 /**********给定二叉树判断其是否为二叉排序树********/
 //二叉排序树的中序遍历打印其实是把元素从小到大输出，利用这一特性 我们可以判断一棵树是否为二叉树
@@ -510,14 +515,58 @@ Node * Tree::Rebulid_BinaryTree(int preorder[], int midorder[],int len)
     root = Rebulid_BinaryTree(preorder, preorder+len-1, midorder, midorder+len-1);
 }
 
+bool Judge_HasSubtree(Node * current, Node * sub)
+{
+    if(sub == NULL)
+        return true;
+    if(current == NULL)
+        return false;
+     if(current->data != sub->data)
+        return false;
+
+     return Judge_HasSubtree( current->left,sub->left) && Judge_HasSubtree( current->right,sub->right);
+}
+
+bool HasSubTree(Tree * currentT, Tree  * subT)
+{
+    Node *  current  = currentT->root;
+    Node *  sub = subT->root;
+    if(sub == NULL)
+        return true;
+    if(current == NULL)
+        return false;
+    stack<Node *> s;
+    while(current != NULL ||  !s.empty())
+    {
+        while(current)
+        {
+            if(current->data == sub->data)
+                if(  Judge_HasSubtree( current->left,sub->left) && Judge_HasSubtree( current->right,sub->right)  )
+                    return true;
+                s.push(current);
+                current = current->left;
+        }
+
+        if( !s.empty() )
+        {
+                    current = s.top();
+                    s.pop();
+                    current = current->right;
+        }
+    }
+    return false;
+}
+
 
 int main()
 {
     int a[10] = {5,3,7,2,4,6,8,1};
     int b[10] = {1,2,4,7,3,5,6,8};
     int c[10] = {4,7,2,1,5,3,8,6};
+    int d[4] = {5,3,7,2};
     Tree T(a,8);
     Tree R(b,c,8);
+    Tree Sub(d,4);
     Node *p = T.SearchNode(3);
     if(p != NULL)
     cout<<"Search Element is:"<<p->data<<endl;
@@ -529,7 +578,11 @@ int main()
     T.Print_Tree();
     //R.Rebulid_BinaryTree(b,c,8);
     R.Print_Tree();
+    Sub.Print_Tree();
+    HasSubTree(&T, &Sub) ? cout<<"HasSub"<<endl : cout<<"HasNotSob"<<endl;
+
     cout<<endl<<(IsSortTree(&T)?"YES":"NO")<<endl;
     p->data = 5;
     cout<<endl<<(IsSortTree(&T)?"YES":"NO")<<endl;
+    HasSubTree(&T, &Sub) ? cout<<"HasSub"<<endl : cout<<"HasNotSob"<<endl;
 }
