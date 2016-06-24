@@ -46,7 +46,7 @@ public:
     void Print_Tree(void);
 
 //ÅÐ¶ÏcurrentTÊÇ·ñ°üº¬×ÓÊ÷subT
-    friend bool HasSubTree(Tree * currentT, Tree  * subT);
+    friend bool HasSubTree(Tree & currentT, Tree  & subT);
 
 
     friend int IsSortTree(Tree * tree);
@@ -527,10 +527,10 @@ bool Judge_HasSubtree(Node * current, Node * sub)
      return Judge_HasSubtree( current->left,sub->left) && Judge_HasSubtree( current->right,sub->right);
 }
 
-bool HasSubTree(Tree * currentT, Tree  * subT)
+bool HasSubTree(Tree& currentT, Tree & subT)
 {
-    Node *  current  = currentT->root;
-    Node *  sub = subT->root;
+    Node *  current  = currentT.root;
+    Node *  sub = subT.root;
     if(sub == NULL)
         return true;
     if(current == NULL)
@@ -579,10 +579,10 @@ int main()
     //R.Rebulid_BinaryTree(b,c,8);
     R.Print_Tree();
     Sub.Print_Tree();
-    HasSubTree(&T, &Sub) ? cout<<"HasSub"<<endl : cout<<"HasNotSob"<<endl;
+    HasSubTree(T, Sub) ? cout<<"HasSub"<<endl : cout<<"HasNotSob"<<endl;
 
     cout<<endl<<(IsSortTree(&T)?"YES":"NO")<<endl;
     p->data = 5;
     cout<<endl<<(IsSortTree(&T)?"YES":"NO")<<endl;
-    HasSubTree(&T, &Sub) ? cout<<"HasSub"<<endl : cout<<"HasNotSob"<<endl;
+    HasSubTree(T, Sub) ? cout<<"HasSub"<<endl : cout<<"HasNotSob"<<endl;
 }
