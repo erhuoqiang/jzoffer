@@ -22,33 +22,36 @@ int main()
 		printf("%d ",P->Element);
 			P = P->Next;
 	}
-
-    middle = Search_Moddle(L);
-    if(middle != NULL)
-    printf("middle element is %d\n", middle->Element);
+ 	
+    	middle = Search_Moddle(L);
+    	if(middle != NULL)
+    	printf("middle element is %d\n", middle->Element);
     
-    printf("Please input kth To List Tail:");
-    scanf("%d",&temp);
-    KthToTail = FindKthToTail(L,(unsigned int )temp);
-    if(KthToTail != NULL)
-   	printf("Kth To Tail is: %d\n",  KthToTail->Element);
-    else 
-	printf("K is ERROR status = %d\n", FKTT_Status);
 
-	/******½«Lµ¹Ğğ****/
+    	printf("Please input kth To List Tail:");
+    	scanf("%d",&temp);
+    	KthToTail = FindKthToTail(L,(unsigned int )temp);
+    	if(KthToTail != NULL)
+   		printf("Kth To Tail is: %d\n",  KthToTail->Element);
+    	else 
+		printf("K is ERROR status = %d\n", FKTT_Status);
+
+
+	/******½«Lµ¹Ğğ****/	
 	L = List_Reverse(L);
-	P = L->Next;
+		P = L->Next;
 	while( P != NULL )
 	{
 		printf("%d ",P->Element);
 			P = P->Next;
 	}
+
 	L->Next->Next = L->Next;
-    printf("IsLoop ? %s\n", IsLoop(L, &P)? "yes": "no");
-    printf("%d", P->Element);
-    getchar();
-    return 0;
-}
+    	printf("IsLoop ? %s\n", IsLoop(L, &P)? "yes": "no");
+    	printf("%d", P->Element);
+    	getchar();
+    	return 0;
+}	
 
 
 

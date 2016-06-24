@@ -26,6 +26,7 @@ Position Search_Moddle(List L); //查找中间元素
 int IsLoop(List L, List *start); //回环链表检测
 Position FindKthToTail(List  L, unsigned int k);//求链表倒数第k个元素
 extern int FKTT_Status ;//FindKthToTail函数的状态
+extern Position List_Merge( Position pHead1,  Position  pHead2 );//合并链表
 struct Node
 {
 	ElementType Element;

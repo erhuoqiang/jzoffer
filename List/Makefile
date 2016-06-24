@@ -6,4 +6,4 @@ $(OBJ):$(SRC)
 	gcc -c  $(SRC) 
 .PHONY:clean
 clean:
-	-rm *.o* list *.c~ *.h~   
+	-rm *.o list  *~

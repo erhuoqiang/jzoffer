@@ -135,7 +135,7 @@ List List_Reverse(List L)
 /******查找链表中间元素*******/
 Position Search_Moddle(List L)
 {
-    Position cur = NULL, middle = L->Next;  
+    Position cur = NULL, middle = L->Next;
     int i = 0, j = 0;
     if(L == NULL || L->Next == NULL)
     {
@@ -181,12 +181,12 @@ int IsLoop(List L, List *start)
 }
 
 /*************求倒数第K个节点*******************/
-/* 
+/*
 	注意点：
-		1 考虑链表长度小于k和考虑k = 0 情况 
+		1 考虑链表长度小于k和考虑k = 0 情况
 		2 链表为NULL或者没元素
 		3 最后一个节点指向NULL 不算节点
-		
+
 	2016.05.10
 					 				*/
 enum FindKthToTaik_Status
@@ -211,7 +211,7 @@ Position FindKthToTail(List  L, unsigned int k)
 		return NULL;
 	}
 	for( i = 1;  i < k; i++)  //注意 如果前面没有k != 0判断这里不要用<=k-1，因为k=0时 k-1=0XFFFFFFFF，会导致崩溃
-	{	
+	{
 		pHead = pHead->Next;
 		if( pHead->Next  == NULL)  //考虑链表长度小于k
 		{
@@ -226,4 +226,80 @@ Position FindKthToTail(List  L, unsigned int k)
 	}
 	return pBehind;
 }
-		
+/*两链表合并 非递归*/
+/*
+Position  List_Merge( Position  pHead1,  Position  pHead2 )
+{
+	Position  merge = NULL;
+	Position  head = NULL;
+
+	if(pHead1 == NULL)
+		return pHead2;
+	else if( pHead2 == NULL)
+		return pHead1;
+	
+	if(pHead1->Element <= pHead2->Element)
+	{
+		head = merge = pHead1;	
+		pHead1 = pHead1->Next;
+	}
+	else
+	{
+		head = merge = pHead2;	
+		pHead2 = pHead2->Next;
+	}
+
+	while(pHead1 && pHead2)
+	{	
+		if(pHead1->Element <= pHead2->Element)
+		{
+			merge->Next = pHead1;
+			pHead1 = pHead1->Next;
+			merge = merge->Next;
+		}
+		else
+		{
+			merge->Next = pHead2;
+			pHead2 = pHead2->Next;
+			merge = merge->Next;
+		}
+	}
+	while(pHead1 != NULL)
+	{
+		merge->Next = pHead1;
+		pHead1 = pHead1->Next;
+		merge = merge->Next;
+	}
+	while(pHead2 != NULL)
+	{
+		merge->Next = pHead2;
+		pHead2 = pHead2->Next;
+		merge = merge->Next;
+	}
+	return head;	
+}
+*/
+/*两链表合并 递归*/
+Position  List_Merge( Position  pHead1,  Position  pHead2 )
+{
+	Position  head = NULL;
+
+	if(pHead1 == NULL)
+		return pHead2;
+	else if( pHead2 == NULL)
+		return pHead1;
+	
+	if(pHead1->Element <= pHead2->Element)
+	{
+		head = pHead1;	
+		head->Next =  List_Merge(pHead1->Next,pHead2);
+	}
+	else
+	{
+		head = pHead2;	
+		head->Next =  List_Merge(pHead1,pHead2->Next);
+	}
+
+
+	return head;	
+}
