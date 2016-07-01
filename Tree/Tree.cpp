@@ -429,11 +429,12 @@ void Tree::Print_Tree(void)
         {
             q.push(NULL);
         }
+	
+	num++;
+        cout<<temp->data<<" ";
 
         if(temp == Last)
         {
-            num++;
-            cout<<temp->data<<" ";
             if(num % 2 == 1 && count != 1)  //第一行不考虑 因为第一行num肯定是奇数
             {
                 q.pop();
@@ -454,11 +455,6 @@ void Tree::Print_Tree(void)
                 }
             }
 
-        }
-        else
-        {
-                num++;
-                cout<<temp->data<<" ";
         }
 
     }
