@@ -48,6 +48,7 @@ public:
 //判断currentT是否包含子树subT
     friend bool HasSubTree(Tree & currentT, Tree  & subT);
 
+    friend void MirrorTree(Tree * tree);
 
     friend int IsSortTree(Tree * tree);
     //根据二叉树的前序遍历和后续遍历重建二叉树
@@ -341,6 +342,45 @@ void Tree::LevelOrderTree(Node * current)
         }
     }
 }
+
+/****************二叉树的镜像 将二叉树节点对称****************/
+void MirrorTree(Tree * tree)
+{
+    queue<Node *>q;
+    Node * temp = NULL, * current = NULL;
+
+    if(tree == NULL || tree->root == NULL)
+	return ;
+    current = tree->root;
+    q.push(current);
+
+    while(!q.empty())
+    {
+        temp = q.front();
+        q.pop();
+ 	if(temp->left == NULL && temp->right == NULL)
+	{
+		continue;
+	}
+	else
+	{
+		current = temp->left;
+		temp->left = temp->right;
+		temp->right = current;
+		
+	}   
+        if(temp->left != NULL)
+        {
+            q.push(temp->left);
+        }
+
+        if(temp->right != NULL)
+        {
+            q.push(temp->right);
+        }
+    }
+}
+
 /*******打印二叉树的行数和结构基于层序遍历*************/
 void Tree::Print_Tree(void)
 {
@@ -579,10 +619,14 @@ int main()
     //R.Rebulid_BinaryTree(b,c,8);
     R.Print_Tree();
     Sub.Print_Tree();
-    HasSubTree(T, Sub) ? cout<<"HasSub"<<endl : cout<<"HasNotSob"<<endl;
+    HasSubTree(T, Sub) ? cout<<"HasSub"<<endl : cout<<"HasNotSob"<<endl;    
 
     cout<<endl<<(IsSortTree(&T)?"YES":"NO")<<endl;
     p->data = 5;
     cout<<endl<<(IsSortTree(&T)?"YES":"NO")<<endl;
     HasSubTree(T, Sub) ? cout<<"HasSub"<<endl : cout<<"HasNotSob"<<endl;
+
+    cout<<"MirrorTree"<<endl;
+    MirrorTree(&R);
+    R.Print_Tree();
 }
