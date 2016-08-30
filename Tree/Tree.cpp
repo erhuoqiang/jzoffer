@@ -279,6 +279,7 @@ void Tree::PostOrderTree_Rescursion(Node * current)
 void Tree::PostOrderTree_UonRecursion(Node * current)
 {
     stack<Node *> s;
+    Node *pre = NULL;//用于记录上一次输出的节点位置
     while(current != NULL || !s.empty())
     {
         while(current != NULL)
@@ -289,17 +290,28 @@ void Tree::PostOrderTree_UonRecursion(Node * current)
         if(!s.empty())
         {
             current = s.top();//返回栈顶元素
-            if(!current->flag)
+            if( current->right == pre || current->right == NULL )
             {
-                current->flag = true;
-                current = current->right;
+                cout<<current->data<<" ";
+                s.pop();
+                pre = current;
+                current = NULL;
             }
             else
             {
-                cout<<current->data<<" ";
-                s.pop();  //推出栈顶单元
-                current = NULL;   //输出元素后，置NULL，防止current 在此以自己的值进入while循环，导致无限遍历
+                current = current->right;
             }
+//            if(!current->flag)
+//            {
+//                current->flag = true;
+//                current = current->right;
+//            }
+//            else
+//            {
+//                cout<<current->data<<" ";
+//                s.pop();  //推出栈顶单元
+//                current = NULL;   //输出元素后，置NULL，防止current 在此以自己的值进入while循环，导致无限遍历
+//            }
         }
     }
 }
@@ -367,8 +379,8 @@ void MirrorTree(Tree * tree)
 		current = temp->left;
 		temp->left = temp->right;
 		temp->right = current;
-		
-	}   
+
+	}
         if(temp->left != NULL)
         {
             q.push(temp->left);
@@ -429,7 +441,7 @@ void Tree::Print_Tree(void)
         {
             q.push(NULL);
         }
-	
+
 	num++;
         cout<<temp->data<<" ";
 
@@ -615,7 +627,7 @@ int main()
     //R.Rebulid_BinaryTree(b,c,8);
     R.Print_Tree();
     Sub.Print_Tree();
-    HasSubTree(T, Sub) ? cout<<"HasSub"<<endl : cout<<"HasNotSob"<<endl;    
+    HasSubTree(T, Sub) ? cout<<"HasSub"<<endl : cout<<"HasNotSob"<<endl;
 
     cout<<endl<<(IsSortTree(&T)?"YES":"NO")<<endl;
     p->data = 5;
